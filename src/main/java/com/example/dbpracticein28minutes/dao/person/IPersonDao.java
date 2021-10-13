@@ -13,10 +13,10 @@ public interface IPersonDao {
 
     List<Person> findAll();
 
-    int save(Person person);
+    void save(Person person);
 
-    int update(Person person);
+    void update(Person person);
 
-    int deleteById(int id);
+    void deleteById(int id);
 
 }

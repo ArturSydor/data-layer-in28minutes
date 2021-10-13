@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class PersonDao implements IPersonDao {
+public class PersonJdbcDao implements IPersonDao {
 
     private static final String FIND_ALL = "select * from person";
 
@@ -48,20 +48,23 @@ public class PersonDao implements IPersonDao {
     }
 
     @Override
-    public int save(Person person) {
-        return jdbcTemplate.update(INSERT, person.getId(), person.getName(),
+    public void save(Person person) {
+        // jdbcTemplate.update returns number of inserted rows
+        jdbcTemplate.update(INSERT, person.getId(), person.getName(),
                 person.getLocation(), person.getBirthDate());
     }
 
     @Override
-    public int update(Person person) {
-        return jdbcTemplate.update(UPDATE, person.getName(),
+    public void update(Person person) {
+        // jdbcTemplate.update returns number of updated rows
+        jdbcTemplate.update(UPDATE, person.getName(),
                 person.getLocation(), person.getBirthDate(), person.getId());
     }
 
     @Override
-    public int deleteById(int id) {
-        return jdbcTemplate.update(DELETE_BY_ID, id);
+    public void deleteById(int id) {
+        // jdbcTemplate.update returns number of deleted rows
+        jdbcTemplate.update(DELETE_BY_ID, id);
     }
 
     private Optional<Person> mapRow(ResultSet rs) throws SQLException {

@@ -15,7 +15,7 @@ import java.sql.Date;
 @SpringBootApplication
 public class DbPracticeIn28minutesApplication implements CommandLineRunner {
 
-    private final IPersonDao personDao;
+    private final IPersonDao personJpaDao;
 
     public static void main(String[] args) {
         SpringApplication.run(DbPracticeIn28minutesApplication.class, args);
@@ -24,23 +24,24 @@ public class DbPracticeIn28minutesApplication implements CommandLineRunner {
     @Override
     public void run(String... args) {
         displayAllPeople();
-        log.info("Person found by its ID = {}", personDao.findById(10002)
+        log.info("Person found by its ID = {}", personJpaDao.findById(10002)
                 .orElseThrow(() -> new RuntimeException("No person was found by id")));
-        log.info("Person found by its Name and Location = {}", personDao.findByNameAndLocation("Pieter", "Amsterdam"));
-        log.info("{} people were deleted", personDao.deleteById(10003));
+        log.info("Person found by its Name and Location = {}", personJpaDao.findByNameAndLocation("Pieter", "Amsterdam"));
+        personJpaDao.deleteById(10003);
+        log.info("Person with id = {} was deleted", 10003);
         displayAllPeople();
         Person person = new Person(10005, "Test", "Test town", new Date(System.currentTimeMillis()));
         log.info("Saving new person");
-        personDao.save(person);
+        personJpaDao.save(person);
         displayAllPeople();
         log.info("Updating person name");
         person.setName("Omar");
-        personDao.update(person);
+        personJpaDao.update(person);
         displayAllPeople();
     }
 
     private void displayAllPeople() {
         log.info("All people in DB");
-        personDao.findAll().forEach(person -> log.info(person.toString()));
+        personJpaDao.findAll().forEach(person -> log.info(person.toString()));
     }
 }
